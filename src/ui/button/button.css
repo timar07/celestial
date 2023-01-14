@@ -1,0 +1,45 @@
+.btn
+{
+    border: none;
+    width: 100%;
+    height: 50px;
+    background-color: var(--ui-bg-light);
+    font-size: var(--fz-normal);
+    font-family: var(--font-family);
+    font-weight: var(--fw-normal);
+    color: var(--ui-text-color-dark);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: 0 10px;
+}
+
+.btn_danger span {
+    color: var(--ui-color-danger)
+}
+
+.btn_outline {
+    border-radius: var(--ui-border-radius);
+    border: 2px solid var(--ui-color-accent);
+    color: var(--ui-color-accent);
+}
+
+.btn span
+{
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    transition: background-color 0.15s;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.btn span i {
+    margin-right: 10px;
+}
+
+.btn:hover div
+{
+    background-color: var(--ui-color-lighter);
+}

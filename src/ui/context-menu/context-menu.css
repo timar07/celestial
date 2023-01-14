@@ -1,0 +1,27 @@
+.context-menu {
+    border-radius: 8px;
+    width: 190px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.54);
+    position: absolute;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+}
+
+.context-menu .btn {
+    color: var(--ui-text-color-dark);
+}
+
+.context-menu .btn:hover {
+    background: var(--ui-bg-lighter);
+}
+
+.ui-light .context-menu {
+    background-color: var(--ui-bg-light);
+}
+
+.ui-dark .context-menu {
+    background-color: var(--ui-bg-dark);
+}

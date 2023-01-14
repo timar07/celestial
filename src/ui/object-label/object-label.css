@@ -1,0 +1,13 @@
+.object-label {
+    position: absolute;
+    box-shadow: var(--ui-box-shadow);
+    padding: 10px;
+    border-radius: var(--ui-border-radius);
+    background: var(--ui-bg-light);
+    font-family: var(--font-family);
+    color: var(--ui-text-color-dark);
+    font-size: var(--fz-normal);
+    cursor: default;
+    user-select: none;
+    z-index: 1;
+}

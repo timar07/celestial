@@ -1,0 +1,34 @@
+:root {
+    --font-family: "Quicksand", sans-serif;
+    --fz-normal: 1em;
+    --fz-small: .75em;
+    --fw-normal: 300;
+    --ui-color-accent: rgb(17, 146, 227);
+    --ui-color-light: rgba(255, 255, 255, 0.54);
+    --ui-color-lighter: rgba(255, 255, 255, 0.75);
+    --ui-color-dark: rgba(0, 0, 0, 0.54);
+    --ui-color-danger: #ef4949;
+    --ui-bg-dark: var(--ui-color-dark);
+    --ui-bg-light: var(--ui-color-light);
+    --ui-bg-lighter: rgba(255, 255, 255, 0.70);
+    --ui-text-color-dark: rgba(0, 0, 0, 0.54);
+    --ui-text-color-light: #e8e8e8;
+    --ui-border-radius: 8px;
+    --ui-box-shadow: 0 0 30px rgba(0, 0, 0, 0.54);
+    --ui-transition: ease-in;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+}
