@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Celestial bodies simulation written in Three.js",
   "main": "index.js",
-  "start": "npx react-scripts start",
   "scripts": {
+    "start": "npx react-scripts start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "timar",
