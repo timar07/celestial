@@ -58,34 +58,51 @@ export class PlanetSubject extends CelestialSubject {
         let vertices = geo.attributes.position.array;
         geo.setAttribute( 'color', new THREE.BufferAttribute( new Float32Array( vertices.length * 3 ), 3 ) );
 
-        // transform vertices
+        this.modifyVertices(geo, vertices)
+    }
+
+    private modifyVertices(geo: any, vertices: any) {
         for (let i = 0; i < vertices.length; i += 3) {
-            const vertex = new Vector3(vertices[i], vertices[i+1], vertices[i+2])
-            const distortion = this.getDistortion(vertex)
-            const newVertex = this.transformVertex(vertex, distortion)
-            vertices[i+0] = newVertex.x
-            vertices[i+1] = newVertex.y
-            vertices[i+2] = newVertex.z
-
-            const heightDelta = this.getHeightDelta(vertex, newVertex)
-            let color: THREE.Color
-
-            if (heightDelta > 2 && heightDelta < 3)
-                color = new THREE.Color(0xed5364) // Red
-            else if (heightDelta > 0.6 && heightDelta < 2)
-                color = new THREE.Color(0x63ea48) // Green
-            else if (heightDelta > 0.4 && heightDelta < 0.6)
-                color = new THREE.Color(0x7156B8) // Violet
-            else if (heightDelta > 0.2 && heightDelta < 0.4)
-                color = new THREE.Color(0x4E8199) // Gray
-            else if (heightDelta > -0.5 && heightDelta < 0.2)
-                color = new THREE.Color(0xef5f26) // Orange
-            else
-                color = new THREE.Color(this.model.getColor())
-            geo.attributes.color.setXYZ(i+0, color.r, color.g, color.b);
-            geo.attributes.color.setXYZ(i+1, color.r, color.g, color.b);
-            geo.attributes.color.setXYZ(i+2, color.r, color.g, color.b);
+            this.modifyVertex(geo, vertices, i)
         }
+    }
+
+    private modifyVertex(geo: any, vertices: any, i: number) {
+        const vertex = new Vector3(vertices[i], vertices[i+1], vertices[i+2])
+        const newVertex = this.transformVertex(vertex)
+        vertices[i+0] = newVertex.x
+        vertices[i+1] = newVertex.y
+        vertices[i+2] = newVertex.z
+
+        this.modifyVertexColor(geo, i, vertex, newVertex)
+    }
+
+    private modifyVertexColor(
+        geo: any,
+        index: number,
+        originalVertex: THREE.Vector3,
+        newVertex: THREE.Vector3
+    ) {
+        const heightDelta = this.getHeightDelta(originalVertex, newVertex)
+        let color: THREE.Color = this.getLayerColor(heightDelta)
+        geo.attributes.color.setXYZ(index+0, color.r, color.g, color.b);
+        geo.attributes.color.setXYZ(index+1, color.r, color.g, color.b);
+        geo.attributes.color.setXYZ(index+2, color.r, color.g, color.b);
+    }
+
+    private getLayerColor(height: number) {
+        if (height > 2 && height < 3)
+            return new THREE.Color(0xed5364) // Red
+        else if (height > 0.6 && height < 2)
+            return new THREE.Color(0x63ea48) // Green
+        else if (height > 0.4 && height < 0.6)
+            return new THREE.Color(0x7156B8) // Violet
+        else if (height > 0.2 && height < 0.4)
+            return new THREE.Color(0x4E8199) // Gray
+        else if (height > -0.5 && height < 0.2)
+            return new THREE.Color(0xef5f26) // Orange
+        else
+            return new THREE.Color(this.model.getColor())
     }
 
     private getHeightDelta(v1: Vector3, v2: Vector3): number {
@@ -98,8 +115,8 @@ export class PlanetSubject extends CelestialSubject {
 
     private transformVertex(
         vertex: Vector3,
-        distortion: number
     ): Vector3 {
+        const distortion = this.getVertexDistortion(vertex)
         const norm = this.getNormalizedVector(vertex)
         return new Vector3(
             vertex.x + norm.x * distortion,
@@ -108,7 +125,7 @@ export class PlanetSubject extends CelestialSubject {
         )
     }
 
-    private getDistortion(vec: Vector3) {
+    private getVertexDistortion(vec: Vector3) {
        return this.model.getRadius()*this.getRandomHeight('seed', vec, 0.09)
     }
 

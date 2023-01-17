@@ -1,14 +1,15 @@
 import { CelestialObject } from "./model/celestial-object"
 import { PlanetSubject } from "./subjects/planet-subject"
 import { StarSubject } from "./subjects/star-subject"
+// import { OrbitSubject } from "./subjects/entities/orbit-subject"
+
+// Three.js imports
 import * as THREE from "three"
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass'
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer"
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass"
-import { Vector2, Vector3 } from "three";
-// import { OrbitSubject } from "./subjects/entities/orbit-subject"
 
 export class SceneManager {
     private objects: CelestialObject[] = [
@@ -101,10 +102,17 @@ export class SceneManager {
     private updateModel() {
         for(let a of this.objects) {
             for (let b of this.objects) {
-                if (a !== b) {
-                    a.influence(b)
-                }
+                this.influenceObjects(a, b)
             }
+        }
+    }
+
+    private influenceObjects(
+        a: CelestialObject,
+        b: CelestialObject
+    ): void {
+        if (a !== b) {
+            a.influence(b)
         }
     }
 
@@ -114,7 +122,7 @@ export class SceneManager {
     }
 
     private composeEffects() {
-        const resolution = new Vector2(window.innerWidth, window.innerHeight)
+        const resolution = new THREE.Vector2(window.innerWidth, window.innerHeight)
         this.composer.addPass(new RenderPass(this.scene, this.camera))
         const bloomPass = new UnrealBloomPass(
             resolution,
@@ -198,45 +206,11 @@ export class SceneManager {
             this.getMouseVector(e),
             this.camera
         )
-        let mouse = this.getMouseVector(e)
+
         let intersects = raycaster.intersectObject(this.scene, true);
         return intersects.length > 0 ?
                intersects[0].object:
                undefined
-    }
-
-    /**
-     * Calculate orbit relative to the heavies object in the scene
-     */
-    private calculateOrbit(): Vector3[] {
-        let a = Object.assign(Object.create(Object.getPrototypeOf(this.objects[1])), this.objects[1])
-        let b = this.getHeaviestObject()
-        let points: Vector3[] = []
-
-        for (let i = 0; i < 5000; i ++) {
-            a.influence(b)
-            let pos = a.getPos()
-            points.push(new Vector3(
-                pos.x,
-                pos.y,
-                pos.z,
-            ))
-        }
-
-        return points
-    }
-
-    private getHeaviestObject(): CelestialObject {
-        let heaviest: CelestialObject = this.objects[0]
-
-        this.objects.forEach(_ => {
-            if (_.getMass() < (heaviest.getMass() || 0))
-                return
-
-            heaviest = _
-        })
-
-        return heaviest
     }
 
     private getMouseVector(

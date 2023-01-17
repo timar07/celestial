@@ -19,13 +19,8 @@ export class StarSubject extends CelestialSubject {
     }
 
     protected updateGeometry(): void {}
-
-    protected updateMaterial(): void {
-    }
-
-    protected updateChildren(): void {
-        // this.atmosphere.update()
-    }
+    protected updateMaterial(): void {}
+    protected updateChildren(): void {}
 
     protected createMaterial() {
         let mat = new THREE.MeshBasicMaterial( {
@@ -39,7 +34,6 @@ export class StarSubject extends CelestialSubject {
             this.model.getRadius(),
             this.getGeometryDetail()
         )
-        geo.computeVertexNormals();
         return geo
     }
 

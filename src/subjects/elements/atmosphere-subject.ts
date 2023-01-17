@@ -1,11 +1,16 @@
 import * as THREE from "three"
 import { CelestialObject } from "../../model/celestial-object"
+import { SceneSubject } from "../../scene-subject"
 import { CelestialSubject } from "../celestial-subject"
 
-export class Atmosphere extends CelestialSubject {
+export interface AtmosphereObject {
+    radius: number
+}
+
+export class Atmosphere extends SceneSubject<AtmosphereObject> {
     constructor(
         scene: THREE.Scene,
-        model: CelestialObject
+        model: AtmosphereObject
     ) {
         super(scene, model)
     }
@@ -15,7 +20,7 @@ export class Atmosphere extends CelestialSubject {
     protected updateChildren() {}
 
     protected override createGeometry() {
-        const geo = new THREE.SphereGeometry(this.model.getRadius()+10, 35, 35)
+        const geo = new THREE.SphereGeometry(this.model.radius, 35, 35)
         return geo
     }
 
